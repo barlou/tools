@@ -1,0 +1,45 @@
+# tools/.github/workflows/ci.yml
+name: Tools CI/CD Pipeline 
+
+on:
+  workflow_dispatch:
+    inputs:
+      gitleaks_allow_failure:
+        description: "Allow gitleaks to fail (emergency only)"
+        required: false
+        type: boolean
+        default: false
+      semgrep_allow_failure:
+        description: "Allow semgrep to fail (emergency only)"
+        required: false
+        type: boolean
+        default: false
+      pip_audit_allow_failure:
+        description: "Allow pip-audit to fail (emergency only)"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  security:
+    name: security gate
+    uses: barlou/CICD/.github/workflows/_security.yml@main
+    with:
+      gitleaks_allow_failure:  ${{ inputs.gitleaks_allow_failure || false }}
+      semgrep_allow_failure:   ${{ inputs.semgrep_allow_failure || false }}
+      pip_audit_allow_failure: ${{ inputs.pip_audit_allow_failure || false }}
+    secrets: inherit
+
+  release:
+    name: Release - tag and changelog
+    if: |
+      github.ref == 'refs/heads/main' && 
+      github.event_name == 'push'
+    uses: barlou/CICD/.github/workflows/_release.yml@main
+    with:
+      module: "tools"
+    secrets: inherit 
