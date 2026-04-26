@@ -1,0 +1,5 @@
+# cloud_client runtime dependencies 
+# All package pinned with upper bound - required by pip-audit in barlou/CICD _security.yml
+# Ref: https://pypi.org/project/pip-audit
+boto3>=1.26.0,<2.0.0
+botocore>=1.29.0,<2.0.0

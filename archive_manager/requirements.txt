@@ -1,0 +1,9 @@
+# archive_manager runtime dependencies
+# All packages pinned with upper bounds — required by pip-audit in barlou/CICD _security.yml
+#
+# Install sibling packages in order before this one:
+#   pip install -e ../cloud_client
+#   pip install -e ../log_framework
+#   pip install -e .
+pandas>=2.0.0,<3.0.0
+pyarrow>=12.0.0,<20.0.0

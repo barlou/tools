@@ -1,0 +1,14 @@
+{
+  "_doc": "Template only. Real values are injected from AWS SSM at deploy time by deploy.sh (barlou/CICD). Never commit credentials here.",
+
+  "module": "{{ MODULE }}",
+  "deployment_date": "{{ DEPLOYMENT_DATE }}",
+  "environment": "{{ ENVIRONMENT }}",
+
+  "storage": {
+    "aws_access_key_id":     "{{ SERVER_ACCESS_KEY }}",
+    "aws_secret_access_key": "{{ SERVER_SECRET_KEY }}",
+    "aws_region":            "{{ SERVER_REGION }}",
+    "bucket_name":           "{{ BUCKET_NAME }}"
+  }
+}

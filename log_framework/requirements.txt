@@ -1,0 +1,10 @@
+# log_framework runtime dependencies
+# All packages pinned with upper bounds — required by pip-audit in barlou/CICD _security.yml
+#
+# cloud_client is a local sibling package — install it first:
+#   pip install -e ../cloud_client
+# Then this package:
+#   pip install -e .
+#
+# No direct third-party deps: boto3/botocore are cloud_client's concern.
+ 
