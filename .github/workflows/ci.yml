@@ -2,6 +2,11 @@
 name: Tools CI/CD Pipeline 
 
 on:
+  push:
+    branches:
+      - main
+      - release
+      - develop
   workflow_dispatch:
     inputs:
       gitleaks_allow_failure:
