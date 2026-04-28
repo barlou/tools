@@ -1,7 +1,6 @@
 # tools
 
-![CI](https://github.com/barlou/tools/actions/
-workflows/ci.yml/badge.svg?branch=main)
+![CI](https://github.com/barlou/tools/actions/workflows/ci.yml/badge.svg?branch=main)
 ![Release](https://img.shields.io/github/v/release/barlou/tools)
 ![Python](https://img.shields.io/badge/python-3.11+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
