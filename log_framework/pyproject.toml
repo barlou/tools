@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "log_framework"
 version = "0.1.0"
 description = "Structured, cloud-aware logging framework for data engineering pipelines"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 license = { text = "MIT" }
 dependencies = [
     "cloud_client",
