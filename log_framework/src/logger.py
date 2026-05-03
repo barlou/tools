@@ -27,10 +27,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional, TYPE_CHECKING
 
-from record import LogLevel, LogRecord, make_record
+from .record import LogLevel, make_record
 
 if TYPE_CHECKING:
-    from flush import FlushStrategy
+    from .flush import FlushStrategy
 
 
 class DataLogger:

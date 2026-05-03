@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "cloud_client"
 version = "0.1.0"
 description = "Mutli-provider cloud storage client for data engineering workloads"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 license = { text = "MIT" }
 dependencies = [
     "boto3>1.26.0,<2.0.0",

@@ -158,7 +158,7 @@ class CloudClientBase(ABC):
 
     def exists(self, remote_key: str) -> bool:
         """Return True when the object exists, False otherwise"""
-        return self._with_retry("exists", self._exist_impl, remote_key)
+        return self._with_retry("exists", self._exists_impl, remote_key)
 
     def list(self, prefix: str = "", *, page_size: int = 1000) -> Iterator[str]:
         """Yield all object keys under prefix (lazy, paginated)
@@ -193,7 +193,7 @@ class CloudClientBase(ABC):
     def _delete_impl(self, remote_key: str) -> bool: ...
     
     @abstractmethod
-    def _exist_impl(self, remote_key: str) -> bool: ...
+    def _exists_impl(self, remote_key: str) -> bool: ...
     
     @abstractmethod
     def _list_impl(self, prefix: str, *, page_size: int) -> Iterator[str]: ...
@@ -215,7 +215,7 @@ class CloudClientBase(ABC):
                     print(
                         f"[{self.provider_name}] {operation} transient error "
                         f"(attempt {attempt + 1}/{self.retry.max_attempts}), "
-                        f"retry in {delay:.2f}s - {exec}"
+                        f"retry in {delay:.2f}s - {exc}"
                     )
                     time.sleep(delay)
             except Exception:
@@ -233,14 +233,14 @@ class CloudClientBase(ABC):
 # Domain exceptions
 # ---------------------------------------------------------------------------
 
-class CloudCLientError(Exception):
+class CloudClientError(Exception):
     """Base for all cloud client errors."""
 
-class CloudUploadError(CloudCLientError):
+class CloudUploadError(CloudClientError):
     """Raises when an upload fails after all retries"""
 
-class CloudDownloadError(CloudCLientError):
+class CloudDownloadError(CloudClientError):
     """Raised when a download fails after all retries"""
 
-class CloudConfigError(CloudCLientError):
+class CloudConfigError(CloudClientError):
     """Raised when credentials or config are missing or invalid"""
