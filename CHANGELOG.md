@@ -3,6 +3,19 @@
 All notable changes to this project are documented in this file.
 
 ---
+## [tools-v1.2.2] - 2026-05-03
+
+## tools v1.2.2
+
+> **Bump type:** Patch - bug fix
+> **Previous version:** tools-v1.2.1
+
+### Fixes
+- fix: configuration ([`53c4d84`](../../commit/53c4d84)) - Louis Barillon
+
+
+---
+---
 ## [tools-v1.2.1] - 2026-05-03
 
 ## tools v1.2.1
