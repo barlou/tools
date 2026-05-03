@@ -31,13 +31,13 @@ from botocore.config import Config as BotocoreConfig
 from botocore.exceptions import ClientError
 from boto3.s3.transfer import TransferConfig
 
-from base import (
+from cloud_client.base import (
     CloudClientBase,
     CloudDownloadError,
     CloudUploadError,
     RetryConfig,
 )
-from config import ConfigLoader
+from cloud_client.config import ConfigLoader
 
 # ---------------------------------------------------------------------------
 # Content-type overrides for data engineering formats
@@ -56,7 +56,7 @@ _MIME_MAP: dict[str, str] = {
 # Multipart threshold
 # AWS recommended multipart for object >100 MB; 8 MB is a safe conservative default
 _MULTIPART_THRESHOLD = 8 * 1024 * 1024
-_MUTIPART_CHUNK      = 8 * 1024 * 1024 
+_MULTIPART_CHUNK      = 8 * 1024 * 1024 
 
 # S3 error codes that are transient and worth retrying 
 _RETRYABLE_CODES = frozenset({
@@ -99,13 +99,13 @@ class S3Client(CloudClientBase):
         super().__init__(provider_name="aws", retry_config=retry_config)
         self.bucket_name = bucket_name
         self._loader = config_loader or ConfigLoader()
-        self._endpoit_url = endpoint_url
+        self._endpoint_url = endpoint_url
         
         creds = self._loader.get_aws_credentials()
         self._s3 = self._build_client(creds)
         self._transfer_config = TransferConfig(
             multipart_threshold = _MULTIPART_THRESHOLD,
-            multipart_chunksize = _MUTIPART_CHUNK,
+            multipart_chunksize = _MULTIPART_CHUNK,
             use_threads = True,
             max_concurrency = 4,
         )
@@ -144,7 +144,7 @@ class S3Client(CloudClientBase):
             self._s3.download_file(
                 Bucket=self.bucket_name,
                 Key=remote_key,
-                Fileame=str(local_path),
+                Filename=str(local_path),
                 Config=self._transfer_config,
             )
         except ClientError as exc:

@@ -60,10 +60,10 @@ import tempfile
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from cloud_client import CloudClientBase
+    from cloud_client.base import CloudClientBase
 
 
 class FlushStrategy(ABC):

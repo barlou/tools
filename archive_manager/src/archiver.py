@@ -58,8 +58,8 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 if TYPE_CHECKING:
-    from cloud_client import CloudClientBase
-    from log_framework import DataLogger
+    from .cloud_client import CloudClientBase
+    from .log_framework import DataLogger
 
 
 # ---------------------------------------------------------------------------
