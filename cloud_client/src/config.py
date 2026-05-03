@@ -29,7 +29,7 @@ import os, json
 from pathlib import Path
 from typing import Any, Optional
 
-from base import CloudConfigError
+from .base import CloudConfigError
 
 _CONFIG_FILENAMES = ("config.json", "cloud_config.json")
 

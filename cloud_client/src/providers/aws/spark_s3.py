@@ -33,19 +33,18 @@ References
 
 from __future__ import annotations
 
-import os 
 from pathlib import Path
 from typing import Optional 
 
-from config import ConfigLoader
+from cloud_client.config import ConfigLoader
 
 # Default Spark tuning for a single-node ingestion workload.
 # Adjust parallelism if you mve to a cluster 
 _SPARK_DEFAULTS: dict[str, str] = {
     "spark.sql.shuffle.partitions":                         "10",
     "spark.default.parallelism":                            "10",
-    "spark.sql.adaptative.enabled":                         "true",
-    "spark.sql.adaptative.coalescePartitions.enabled":      "true",
+    "spark.sql.adaptive.enabled":                         "true",
+    "spark.sql.adaptive.coalescePartitions.enabled":      "true",
     # S3A connector settings
     "spark.hadoop.fs.s3a.impl":                             "org.apache.hadoop.fs.s3a.S3AFileSystem",
     "spark.hadoop.fs.s3a.path.style.access":                "true",
@@ -59,8 +58,8 @@ _SPARK_DEFAULTS: dict[str, str] = {
     "spark.hadoop.fs.s3a.fast.upload.buffer":               "disk",
     # Credential provider - we inject keys explicitly below,
     # but keep the chain as fallback for IAM-role environments
-    "spark.hadoop.fs.s3a.aws.credentials.provider":         
-        "org.apache.fs.s3a.aws.credentials.provider,"
+    "spark.hadoop.fs.s3a.aws.credentials.provider":
+        "org.apache.hadoop.fs.s3a.auth.IAMInstanceCredentialsProvider,"
         "com.amazonaws.auth.InstanceProfileCredentialsProvider",
     
 }
@@ -131,9 +130,9 @@ class SparkS3Config:
         if creds.get("aws_access_key_id"):
             conf.set("spark.hadoop.fs.s3a.access.key", creds["aws_access_key_id"])
         if creds.get("aws_secret_access_key"):
-            conf.set("spark.hadoop.fs.s3a.secret.key", creds["aws_access_secret_key"])
+            conf.set("spark.hadoop.fs.s3a.secret.key", creds["aws_secret_access_key"])
         
-        conf.set("spark.hadoop.fs.s3a.endpoint", self.endpoint_url)
+        conf.set("spark.hadoop.fs.s3a.endpoint", self._endpoint_url)
         
         # Attach jars 
         jars = self._resolve_jars()
@@ -156,9 +155,9 @@ class SparkS3Config:
         hadoop_conf.set("fs.s3a.endpoint", self._endpoint_url)
         hadoop_conf.set("fs.s3a.path.style.access", "true")
         if creds.get("aws_access_key_id"):
-            hadoop_conf.set("fs.s3a.access.key", creds=["aws_access_key_id"])
+            hadoop_conf.set("fs.s3a.access.key", creds["aws_access_key_id"])
         if creds.get("aws_secret_access_key"):
-            hadoop_conf.set("fs.s3a.secret.key", creds=["aws_secret_access_key"])
+            hadoop_conf.set("fs.s3a.secret.key", creds["aws_secret_access_key"])
         
         return spark 
     
@@ -192,4 +191,4 @@ class SparkS3Config:
             str(p) for p in self._jars_dir.iterdir()
             if p.suffix == ".jar"
         ]
-        return ".".join(jar_files)
+        return ",".join(jar_files)
