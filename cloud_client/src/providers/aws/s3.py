@@ -177,7 +177,7 @@ class S3Client(CloudClientBase):
         pages = paginator.paginate(
             Bucket=self.bucket_name,
             Prefix=prefix,
-            PaginatorConfig={"PageSize": page_size},
+            PaginationConfig={"PageSize": page_size},
         )
         for page in pages:
             for obj in page.get("Contents", []):
