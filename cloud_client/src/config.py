@@ -78,7 +78,7 @@ class ConfigLoader:
         """
         return {
             "aws_access_key_id": self._resolve(
-                env_keys="AWS_ACCESS_KEY_ID",
+                env_key="AWS_ACCESS_KEY_ID",
                 json_keys=["aws_access_key_id", "AWS_ACCESS_KEY"],
             ),
             "aws_secret_access_key": self._resolve(
