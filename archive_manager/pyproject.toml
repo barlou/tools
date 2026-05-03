@@ -6,14 +6,13 @@ build-backend = "hatchling.build"
 name = "archive_manager"
 version = "0.1.0"
 description = "Partitioned Parquet / ORC archive manager for cloud storage"
-readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 dependencies = [
     "cloud_client",
     "log_framework",
     "pandas>=2.0.0,<3.0.0",
-    "pyarrow">=12.0.0,<20.0.0",
+    "pyarrow>=12.0.0,<20.0.0",
 ]
 
 [project.optional-dependencies]
