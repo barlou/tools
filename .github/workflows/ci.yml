@@ -42,7 +42,9 @@ jobs:
     name: Release - tag and changelog
     if: |
       github.ref == 'refs/heads/main' && 
-      github.event_name == 'push'
+      github.event_name == 'push' &&
+      !startsWith(github.event.head_commit.message, 'chore(release):')
+
     uses: barlou/CICD/.github/workflows/_release.yml@main
     with:
       module: "tools"
