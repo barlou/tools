@@ -309,7 +309,7 @@ class DataLogger:
 
     def _register_shutdown(self, strategy) -> None:
         """If strategy is or contains ShutdownFlush, register it now."""
-        from flush import ShutdownFlush, CompositeFlush
+        from .flush import ShutdownFlush, CompositeFlush
 
         if isinstance(strategy, ShutdownFlush):
             strategy.register(self._local_file, self._build_remote_key())

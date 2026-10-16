@@ -1,0 +1,12 @@
+
+# exchange_client runtime dependencies
+# Install the connector you need:
+#   pip install -e ".[kraken]"   for Kraken only
+#   pip install -e ".[binance]"  for Binance only
+#   pip install -e ".[all]"      for both
+ 
+pandas>=1.5.0,<3.0.0
+ 
+# Install only the exchange you use — both are optional
+krakenex>=2.1.0
+# python-binance>=1.0.19  # uncomment if using Binance
