@@ -3,6 +3,22 @@
 All notable changes to this project are documented in this file.
 
 ---
+## [tools-v1.3.0] - 2026-10-16
+
+## tools v1.3.0
+
+> **Bump type:** Minor - new feature
+> **Previous version:** tools-v1.2.2
+
+### Features
+- feat: add Exchange Factory to be used in different project ([`743ee70`](../../commit/743ee70)) - Louis Barillon
+
+### Fixes
+- fix: cicd to avoid duplicate workflow && import custom flush method in logger ([`7e67219`](../../commit/7e67219)) - Louis Barillon
+
+
+---
+---
 ## [tools-v1.2.2] - 2026-05-03
 
 ## tools v1.2.2
