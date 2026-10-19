@@ -3,6 +3,20 @@
 All notable changes to this project are documented in this file.
 
 ---
+## [tools-v1.3.1] - 2026-10-19
+
+## tools v1.3.1
+
+> **Bump type:** Patch - bug fix
+> **Previous version:** tools-v1.3.0
+
+### Fixes
+- fix: handle in a better way Cryptocurrencies pairs, present in kraken to ingest data ([`ea55a1e`](../../commit/ea55a1e)) - Louis Barillon
+- fix: better use and correct configuration to be used as a package correctly on deployed server ([`2842297`](../../commit/2842297)) - Louis Barillon
+
+
+---
+---
 ## [tools-v1.3.0] - 2026-10-16
 
 ## tools v1.3.0
