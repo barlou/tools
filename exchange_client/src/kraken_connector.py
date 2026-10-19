@@ -23,21 +23,16 @@ _TIMEFRAME_MAP: dict[str, int] = {
 }
 
 # Symbol normalisation: unified name -> Kraken pair name
-_SYMBOL_MAP: dict[str, str] = {
-    "BTCUSDT":   "XBTUSD",
-    "ETHUSDT":   "ETHUSD",
-    "LTCUSDT":   "LTCUSD",
-    "ADAUSDT":   "ADAUSD",
-    "SOLUSDT":   "SOLUSD",
-    "XRPUSDT":   "XRPUSD",
-    "DOTUSDT":   "DOTUSD",
-    "LINKUSDT":  "LINKUSD",
-    "MATICUSDT": "MATICUSD",
-    "AVAXUSDT":  "AVAXUSD",
+_SYMBOL_OVERRIDES: dict[str, str] = {
+    "BTCUSDT":   "XBTUSDT",
+    "BTCUSDC":   "XBTUSDC",
+    "BTCUSD":    "XBTUSD"
 }
 
 # Assets counted as USD balance
-_USD_ASSETS = {"USD", "ZUSD", "USDT", "USDC"}
+_USD_ASSETS = {"USD", "USDT", "USDC"}
+
+_QUOTE_PRIORITY = ["USDT", "USDC", "USD"]
 
 class KrakenConnector(BaseExchangeConnector):
     """Kraken Rest API connector"""
@@ -46,15 +41,24 @@ class KrakenConnector(BaseExchangeConnector):
         self._api = krakenex.API(key=api_key, secret=secret_key)
         self._log = self._build_logger(bucket_name)
         
+        self._available_pairs: set[str] = set()
+        
         # Verify connectivity at init
         try:
             response = self._api.query_public("Time")
             self._raise_on_error(response, "init")
-            self._log.info(
-                "init",
-                "Kraken connected",
-                extra={"server_time": response["result"]["unixtime"]}
-            )
+            
+            pairs_response = self._api.query_public("AssetPairs")
+            if not pairs_response.get("error"):
+                self._available_pairs = set(pairs_response["result"].keys())
+                self._log.info(
+                    "init",
+                    f"Kraken connected - {len(self._available_pairs)} pairs available",
+                    extra={"server_time": response["result"]["unixtime"]},
+                )
+            else:
+                self._log.info("init", "Kraken connected (pairs list unavailable)")
+                
         except Exception as e:
             self._log.error("init", "Kraken connection failed", exc=e)
             raise
@@ -259,7 +263,26 @@ class KrakenConnector(BaseExchangeConnector):
     
     def _normalize_symbol(self, symbol: str) -> str:
         """Convert unified symbol format to Kraken pair name."""
-        return _SYMBOL_MAP.get(symbol.upper(), symbol)
+        symbol_upper = symbol.upper()
+        
+        if symbol_upper in _SYMBOL_OVERRIDES:
+            return _SYMBOL_OVERRIDES[symbol_upper]
+
+        base = self._extract_base(symbol_upper)
+        
+        for quote in _QUOTE_PRIORITY:
+            candidate = f"{base}{quote}"
+            candidate = _SYMBOL_OVERRIDES.get(candidate, candidate)
+            if not self._available_pairs or candidate in self._available_pairs:
+                return candidate
+            
+        return symbol_upper
+
+    def _extract_base(self, symbol: str) -> str:
+        for suffix in ['USDT', 'USDC', 'USD']:
+            if symbol.endswith(suffix):
+                return symbol[:-len(suffix)]
+        return symbol
     
     def _raise_on_error(self, response: dict, method: str) -> None:
         """Raise an exception if the kraken response contains errors."""
