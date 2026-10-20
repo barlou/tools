@@ -3,6 +3,19 @@
 All notable changes to this project are documented in this file.
 
 ---
+## [tools-v1.3.2] - 2026-10-20
+
+## tools v1.3.2
+
+> **Bump type:** Patch - bug fix
+> **Previous version:** tools-v1.3.1
+
+### Fixes
+- fix: spark configuration to use correct credentials for s3 ([`ac02c7c`](../../commit/ac02c7c)) - Louis Barillon
+
+
+---
+---
 ## [tools-v1.3.1] - 2026-10-19
 
 ## tools v1.3.1
