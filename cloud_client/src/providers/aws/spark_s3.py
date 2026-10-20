@@ -48,8 +48,6 @@ _SPARK_DEFAULTS: dict[str, str] = {
     # S3A connector settings
     "spark.hadoop.fs.s3a.impl":                             "org.apache.hadoop.fs.s3a.S3AFileSystem",
     "spark.hadoop.fs.s3a.path.style.access":                "true",
-    "spark.hadoop.fs.s3a.metadatastore.impl":               "org.apache.hadoop.fs.s3a.impl.NullMetadataStore",
-    "spark.hadoop.fs.s3a.committer.magic.enabled":          "false",
     "spark.hadoop.fs.s3a.committer.name":                   "directory",
     "spark.hadoop.fs.s3a.committer.staging.conflict-mode":  "append",
     "spark.hadoop.fs.s3a.committer.staging.tmp.path":       "/tmp/spark_staging",
@@ -59,9 +57,7 @@ _SPARK_DEFAULTS: dict[str, str] = {
     # Credential provider - we inject keys explicitly below,
     # but keep the chain as fallback for IAM-role environments
     "spark.hadoop.fs.s3a.aws.credentials.provider":
-        "org.apache.hadoop.fs.s3a.auth.IAMInstanceCredentialsProvider,"
-        "com.amazonaws.auth.InstanceProfileCredentialsProvider",
-    
+        "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider",
 }
 
 class SparkS3Config:
